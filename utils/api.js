@@ -27,6 +27,14 @@ const intialObject = {
                 {
                     question:'What is my name?', 
                     answer: 'Hunain'
+                },
+                {
+                    question:'What is your favorite fruit??', 
+                    answer: 'Cherry'
+                },
+                {
+                    question:'What do you want to eat?', 
+                    answer: 'Anything'
                 }
             ]
         }
@@ -56,5 +64,24 @@ export function saveDeck(deckName) {
         .then(
             AsyncStorage.getItem(DECK_STORAGE_KEY)
         )
+    )
+}
+
+export function addQuestion(question) {
+    return(
+        AsyncStorage.getItem(DECK_STORAGE_KEY)
+        .then(data=>{
+            let newData = data
+            for (var key in newData) {
+                if (newData[key].name === question.name) {
+                  delete newData.key;
+                }
+                return newData
+              }
+            newData[question.name] = question
+            
+            return AsyncStorage.mergeItem(DECK_STORAGE_KEY, newData)
+            .then(data=>console.log(data,'new Data'))
+        })
     )
 }

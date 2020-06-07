@@ -15,10 +15,10 @@ class DeckDetails extends React.Component {
                     <Text style={{ fontSize: 18, textAlign: 'center', color: 'black', margin: 10}}>Number of Questions:  {questions.length}</Text>
                 </View>
                 <View>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('')} style={[styles.createBtn, {backgroundColor: 'purple'}]}>
+                    <TouchableOpacity onPress={()=>this.props.navigation.push('New Quiz', {id: id})} style={[styles.createBtn, {backgroundColor: 'purple'}]}>
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Add Card</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>''} style={[styles.createBtn, {backgroundColor: 'green'}]}>
+                    <TouchableOpacity onPress={()=>this.props.navigation.push('Quiz', {id: id})} style={[styles.createBtn, {backgroundColor: 'green'}]}>
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Start Quiz</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>''}>

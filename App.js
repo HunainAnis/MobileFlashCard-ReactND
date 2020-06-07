@@ -10,6 +10,8 @@ import Constants from 'expo-constants';
 import  reducer from './reducers'
 import { createStackNavigator } from '@react-navigation/stack';
 import DeckDetails from './components/deckDetails';
+import Quiz from './components/Quiz';
+import NewQuiz from './components/NewQuiz';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +20,8 @@ function MyStack() {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={myTabs} />
       <Stack.Screen name="Detail" component={DeckDetails} />
+      <Stack.Screen name="Quiz" component={Quiz} />
+      <Stack.Screen name="New Quiz" component={NewQuiz} />
     </Stack.Navigator>
   );
   }
