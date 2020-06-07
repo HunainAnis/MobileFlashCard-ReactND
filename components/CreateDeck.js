@@ -1,6 +1,9 @@
 import React from 'react'
 import { View, Text, StyleSheet, TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { saveDeck } from '../utils/api'
+import { addDeck } from '../actions'
+import { connect } from 'react-redux'
 
 class CreateDeck extends React.Component {
     state={
@@ -9,14 +12,18 @@ class CreateDeck extends React.Component {
 
     handleChange(e) {
         this.setState({
-            deckName: e.target.value
+            deckName: e
         })
     }
     handleSubmit() {
+        const { deckName } = this.state
         // saving data via async
-
+            saveDeck(deckName)
+            this.setState({deckName:''})
         // added to redux store
+            this.props.dispatch(addDeck(deckName))
 
+            console.log(this.props.state, 'new')
         // navigate to home
     }
     render() {
@@ -25,15 +32,16 @@ class CreateDeck extends React.Component {
                 <View style={{alignItems: 'stretch', justifyContent: 'flex-start', marginTop: 30}}>
                     <Text style={{fontSize: 22, fontStyle:'italic', marginBottom: 10, textAlign: 'center'}}>What is the Title of your new deck?</Text>
                     <TextInput 
-                        placeholder="New deck's name here..." 
+                        placeholder="New deck's name here..."
                         style={styles.inputBox}
-                        value={this.state.deckName }
-                        onChange={(e)=>this.handleChange(e)}
+                        value={this.state.deckName}
+                        onChangeText={(e)=>this.handleChange(e)}
                      />
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.createBtn} >
-                        <Text style={{ color: 'white', margin: 10}}>Create Deck</Text>
+                    <Text>{this.state.deckName}</Text>
+                    <TouchableOpacity onPress={()=>this.handleSubmit()} style={styles.createBtn} >
+                        <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Create Deck</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -51,15 +59,24 @@ const styles = StyleSheet.create({
     },
     createBtn: {
         borderColor: 'gray', 
-        backgroundColor: 'blue', 
+        backgroundColor: 'purple', 
         borderWidth: 1, 
-        borderRadius: 8 
+        borderRadius: 8,
+        width: 250 
     },
     inputBox: {
         borderColor: 'gray', 
         borderWidth: 1, 
-        borderRadius: 8 
+        borderRadius: 8,
+        height: 40,
+        padding: 10
     }
   });
 
-export default CreateDeck;
+function mapStateToProps(state) {
+    return {
+        state
+    }
+}
+
+export default connect(mapStateToProps)(CreateDeck);
