@@ -11,7 +11,7 @@ export default function decks ( state={}, action ) {
             return {
                 ...state,
                 ...state.decks,
-                [action.deckName]:[]
+                ...[action.data]
             }
         case REMOVE_DECK:
             return {

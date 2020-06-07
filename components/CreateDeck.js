@@ -17,14 +17,17 @@ class CreateDeck extends React.Component {
     }
     handleSubmit() {
         const { deckName } = this.state
-        // saving data via async
+        if(deckName !== '') {
+            // saving data via async
+            // added to redux store
+            this.props.dispatch(addDeck(deckName))
             saveDeck(deckName)
             this.setState({deckName:''})
-        // added to redux store
-            this.props.dispatch(addDeck(deckName))
-
-            console.log(this.props.state, 'new')
-        // navigate to home
+            // navigate to home
+        }
+        else {
+            alert('Provide a valid Deck name!')
+        }
     }
     render() {
         return(
@@ -40,7 +43,7 @@ class CreateDeck extends React.Component {
                 </View>
                 <View>
                     <Text>{this.state.deckName}</Text>
-                    <TouchableOpacity onPress={()=>this.handleSubmit()} style={styles.createBtn} >
+                    <TouchableOpacity disabled={!this.state.deckName === 'null'} onPress={()=>this.handleSubmit()} style={styles.createBtn} >
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Create Deck</Text>
                     </TouchableOpacity>
                 </View>

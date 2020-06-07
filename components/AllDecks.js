@@ -3,6 +3,7 @@ import { View, Text } from 'react-native'
 import { fetchDecks } from '../utils/api'
 import { fetchAllDecks } from '../actions'
 import { connect } from 'react-redux'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 class AllDecks extends React.Component {
     componentDidMount() {
@@ -10,19 +11,29 @@ class AllDecks extends React.Component {
         fetchDecks()
         .then(data=> dispatch(fetchAllDecks(data)))
     }
+
     render() {
-        console.log(this.props.state.deck1, 'state')
+        const { decks } = this.props
+        console.log(decks, 'dekc')
         return(
             <View>
-                <Text>All Decks</Text>
+            {decks && Object.keys(decks).map(deck=>{
+                return (
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('Detail', {id:deck})} key={decks[deck].name}>
+                        <View style={{borderColor:'purple', borderWidth: 4, margin: 15, borderRadius:20}}>
+                            <Text style={{ fontSize:50,textAlign: 'center', color: 'black'}}>{decks[deck].name}</Text>
+                            <Text style={{ fontSize:15,textAlign: 'center', color: 'black'}}>Number of Questions: {decks[deck].questions.length}</Text>
+                        </View>
+                    </TouchableOpacity>
+            )})}
             </View>
         )
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ decks }) {
     return {
-        state
+        decks
     }
 }
 

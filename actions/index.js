@@ -12,9 +12,14 @@ export function fetchAllDecks(decks) {
 }
 
 export function addDeck(deckName) {
+    const data={}
+    data[deckName] = {
+        name:[deckName],
+        questions:[]
+    }
     return {
         type: ADD_NEW_DECK,
-        deckName
+        data
     }
 }
 

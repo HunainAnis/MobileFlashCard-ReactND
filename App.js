@@ -8,18 +8,35 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import Constants from 'expo-constants';
 import  reducer from './reducers'
+import { createStackNavigator } from '@react-navigation/stack';
+import DeckDetails from './components/deckDetails';
 
+const Stack = createStackNavigator();
+
+function MyStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={myTabs} />
+      <Stack.Screen name="Detail" component={DeckDetails} />
+    </Stack.Navigator>
+  );
+  }
+
+  function myTabs() {
+    const Tab = createMaterialTopTabNavigator();
+    return(
+      <Tab.Navigator>
+        <Tab.Screen name="Decks" component={AllDecks} />
+        <Tab.Screen name="New Deck" component={CreateDeck} />
+      </Tab.Navigator>
+    )
+  }
 export default function App() {
-  const Tab = createMaterialTopTabNavigator();
   return (
     <Provider store={createStore(reducer)}>
       <UdaciStatusBar backgroundColor='purple' barStyle='light-content'  />
       <NavigationContainer>
-          <View style={{marginTop: 30}} />
-          <Tab.Navigator>
-            <Tab.Screen name="Decks" component={AllDecks} />
-            <Tab.Screen name="New Deck" component={CreateDeck} />
-          </Tab.Navigator>
+          <MyStack />
         </NavigationContainer>
     </Provider>
 
