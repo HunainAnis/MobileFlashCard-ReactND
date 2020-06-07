@@ -1,19 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import CreateDeck from './components/CreateDeck';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import AllDecks from './components/AllDecks';
+import { Provider, connect } from 'react-redux';
 
 export default function App() {
+  const Tab = createMaterialTopTabNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <Provider>
+      <NavigationContainer>
+          <View style={{marginTop: 30}} />
+          <Tab.Navigator>
+            <Tab.Screen name="Decks" component={AllDecks} />
+            <Tab.Screen name="New Deck" component={CreateDeck} />
+          </Tab.Navigator>
+        </NavigationContainer>
+    </Provider>
+
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
