@@ -2,12 +2,32 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { deleteDeck } from '../actions'
+import { removeDeck } from '../utils/api'
 
 class DeckDetails extends React.Component {
-    render() {
+
+    deleteDeck = (id) => {
+        const { dispatch, navigation } = this.props
+        dispatch(deleteDeck(id))
+        navigation.goBack()
+        removeDeck(id)
+        alert('delete Worked!')
+    }
+
+    // shouldComponentUpdate(nextProps) {
+    //     const { id } = this.props.route.params
+    //     return nextProps.state[id]
+    // }
+
+    // shouldComponentUpdate(nextProps) {
+    //     return nextProps.metrics && !nextProps.metrics.today;
+    // }
+
+    render(props) {
         const { id } = this.props.route.params
         const { name, questions } = this.props.state[id]
-        console.log(this.props)
+        // console.log(this.props)
         return(
             <View style={styles.container}>
                 <View>
@@ -21,7 +41,7 @@ class DeckDetails extends React.Component {
                     <TouchableOpacity onPress={()=>this.props.navigation.push('Quiz', {id: id})} style={[styles.createBtn, {backgroundColor: 'green'}]}>
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Start Quiz</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>''}>
+                    <TouchableOpacity onPress={()=>this.deleteDeck}>
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'red', margin: 10}}>Delete Deck</Text>
                     </TouchableOpacity>
                 </View>

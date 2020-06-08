@@ -67,3 +67,14 @@ export function addQuestion(key,question) {
         AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({[key]:question}))
     )
 }
+
+export function removeDeck (key) {
+    return AsyncStorage.getItem(DECK_STORAGE_KEY)
+      .then((results) => {
+        const data = JSON.parse(results)
+        data[key] = undefined
+        delete data[key]
+        AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(data))
+    })
+    .catch(err=>console.log(err))
+} 
