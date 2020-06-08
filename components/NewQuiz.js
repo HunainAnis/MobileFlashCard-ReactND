@@ -13,13 +13,17 @@ class NewQuiz extends React.Component {
 
     handleSubmit(e) {
         const { question, answer } = this.state
-        let data = {question, answer}
+        const { deck } = this.props
+        let data = {
+            ...deck,
+            questions:deck.questions.concat({ question, answer })
+        }
         addQuestion(e,data)
         alert(this.state.answer)
     }
 
     render(props) {
-        console.log(this.state, 'newQuizState')
+        console.log(this.props.deck, 'newQuizState')
         return(
             <View style={styles.container}>
                 <View style={{alignItems: 'stretch', justifyContent: 'flex-start', marginTop: 30}}>
@@ -73,30 +77,11 @@ const styles = StyleSheet.create({
     }
   });
 
-function mapStateToProps(state) {
+function mapStateToProps(state, { route }) {
+    const { id } = route.params
     return {    
-        state
+        deck:state[id]
     }
 }
 
 export default connect(mapStateToProps)(NewQuiz)
-
-// {"deck1":{
-//     "name":"Personal Deck",
-//     "questions":[
-//         {
-//             "question":"What is your name?",
-//             "answer":"Hunain"
-//         },
-//         {
-//             "question":"What is my name?"
-//             ,"answer":"Hunain"
-//         }
-//     ],"question":"Fhb",
-//     "answer":"Ggjj"
-// },
-// "deck2":{
-//     "name":"My Deck",
-//     "questions":[
-//         {
-//             "question":"What is your name?","answer":"Hunain"},{"question":"What is my name?","answer":"Hunain"},{"question":"What is your favorite fruit??","answer":"Cherry"},{"question":"What do you want to eat?","answer":"Anything"}]}}
