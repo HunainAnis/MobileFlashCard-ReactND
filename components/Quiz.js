@@ -16,12 +16,12 @@ class Quiz extends React.Component {
             ...this.state,
             revealed:this.state.revealed.concat(e)
         })
-        console.log(this.state.revealed, e)
+        // console.log(this.state.revealed, e)
     }
     render(props) {
         const { id } = this.props.route.params
         const { questions } = this.props.state[id]
-        console.log(this.props.route.params)
+        // console.log(this.props.route.params)
         return(
             <ScrollView>
                 {questions.map(q => (

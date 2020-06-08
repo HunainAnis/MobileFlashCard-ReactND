@@ -26,7 +26,7 @@ class NewQuiz extends React.Component {
     }
 
     render(props) {
-        console.log(this.props.deck, 'newQuizState')
+        // console.log(this.props.deck, 'newQuizState')
         return(
             <View style={styles.container}>
                 <View style={{alignItems: 'stretch', justifyContent: 'flex-start', marginTop: 30}}>

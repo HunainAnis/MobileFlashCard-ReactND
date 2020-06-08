@@ -65,8 +65,5 @@ export function saveDeck(key, deckDetails) {
 export function addQuestion(key,question) {
     return(
         AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({[key]:question}))
-        .then( AsyncStorage.getItem(DECK_STORAGE_KEY)
-            .then(data=>console.log(data, 'aya'))
-        )
     )
 }

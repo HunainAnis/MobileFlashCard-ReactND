@@ -15,7 +15,7 @@ class AllDecks extends React.Component {
 
     render() {
         const { state } = this.props
-        console.log(state, 'all decks')
+        // console.log(state, 'all decks')
         return(
             <ScrollView>
             {state && Object.keys(state).map(deck=>{
