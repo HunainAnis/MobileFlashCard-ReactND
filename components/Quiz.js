@@ -3,6 +3,8 @@ import { View, ScrollView, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Score from './Score'
+import { storeQuiz, fetchQuizDetails, removeQuiz } from '../utils/api'
+import { createPortal } from 'react-dom'
 
 class Quiz extends React.Component {
 
@@ -35,6 +37,8 @@ class Quiz extends React.Component {
     }
 
     startOver() {
+    const key=new Date().toDateString()   
+        removeQuiz(key)
         this.setState({
             revealed: [],
             right: [],
@@ -43,20 +47,32 @@ class Quiz extends React.Component {
         })
     }
 
+    storeQuizToAsync() {
+        const { state } = this
+        const key=new Date().toDateString()
+        const quiz = {...state, id:key}
+        storeQuiz(key, quiz )
+    }
+
     checker(question) {
         return this.state.answered.includes(question)
     }
 
     render(props) {
+        console.log(this.props, 'quiz')
         const { id } = this.props.route.params
         const { questions } = this.props.state[id]
         // console.log(this.props.route.params)
         if(questions.length === this.state.answered.length) {
             return (
-                <Score 
-                    startOver={()=>this.startOver()}
-                    state={this.state}
-                 />
+                <>
+                    <Score 
+                        startOver={()=>this.startOver() }
+                        state={this.state}
+                        navi={this.props.navigation.goBack}
+                    />
+                    {this.storeQuizToAsync()}
+                </>
             )
         }
         return(
@@ -66,14 +82,13 @@ class Quiz extends React.Component {
                             fontSize: 30, 
                             textAlign: 'center', 
                             color: 'purple', 
-                            margin: 10}} >Your Score:  { this.state.right.length }/{questions.length}</Text>
+                            margin: 10}} >Remaining questions to answer:  { questions.length-this.state.right.length}</Text>
                     </View>
                 {questions.map(q => (
                     <View 
                     key={q.question} 
                     style={{margin:20, padding: 10, borderRadius: 10, borderColor: 'black', borderWidth: 2}}
                     >
-                    {console.log(this.checker(q), 'Checker')}
                         <Text 
                             style={{ fontSize: 30, 
                             textAlign: 'center', 

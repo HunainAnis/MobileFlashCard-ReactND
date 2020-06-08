@@ -12,6 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import DeckDetails from './components/deckDetails';
 import Quiz from './components/Quiz';
 import NewQuiz from './components/NewQuiz';
+import Score from './components/Score';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ function MyStack() {
       <Stack.Screen name="Detail" component={DeckDetails} />
       <Stack.Screen name="Quiz" component={Quiz} />
       <Stack.Screen name="New Quiz" component={NewQuiz} />
+      <Stack.Screen name="Score" component={Score} />
     </Stack.Navigator>
   );
   }

@@ -13,11 +13,10 @@ export default function decks ( state={}, action ) {
                 [action.deck.deckName]:action.deck.data
             }
         case REMOVE_DECK:
-             const AllDeck = state
+             const AllDeck = {...state}
              delete AllDeck[action.id]
             return { 
                 ...AllDeck,
-
             }
         case ADD_QUESTION:
             return {

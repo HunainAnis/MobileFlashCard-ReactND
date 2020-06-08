@@ -14,7 +14,7 @@ class NewQuiz extends React.Component {
 
     handleSubmit(e) {
         const { question, answer } = this.state
-        const { deck, id } = this.props
+        const { deck, id, navigation } = this.props
         const questionAnwer = { question, answer }
         let data = {
             ...deck,
@@ -22,7 +22,7 @@ class NewQuiz extends React.Component {
         }
         addQuestion(e,data)
         this.props.dispatch(addNewQuestion({ id, questionAnwer }))
-        alert(this.state.answer)
+        navigation.goBack()
     }
 
     render(props) {
@@ -47,7 +47,6 @@ class NewQuiz extends React.Component {
                      />
                 </View>
                 <View>
-                    <Text></Text>
                     <TouchableOpacity onPress={()=>this.handleSubmit(this.props.route.params.id)} style={styles.createBtn} >
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Submit</Text>
                     </TouchableOpacity>

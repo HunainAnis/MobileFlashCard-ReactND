@@ -17,6 +17,7 @@ class CreateDeck extends React.Component {
     }
     handleSubmit() {
         const { deckName } = this.state
+        const { navigation } = this.props
         if(deckName !== '') {
             // saving data via async
             // added to redux store
@@ -25,6 +26,7 @@ class CreateDeck extends React.Component {
             saveDeck( deckName, data)
             this.setState({deckName:''})
             // navigate to home
+            navigation.goBack()
         }
         else {
             alert('Provide a valid Deck name!')
@@ -43,7 +45,6 @@ class CreateDeck extends React.Component {
                      />
                 </View>
                 <View>
-                    <Text>{this.state.deckName}</Text>
                     <TouchableOpacity disabled={!this.state.deckName === 'null'} onPress={()=>this.handleSubmit()} style={styles.createBtn} >
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Create Deck</Text>
                     </TouchableOpacity>

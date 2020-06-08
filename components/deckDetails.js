@@ -7,12 +7,12 @@ import { removeDeck } from '../utils/api'
 
 class DeckDetails extends React.Component {
 
-    deleteDeck = (id) => {
-        const { dispatch, navigation } = this.props
+    deleteDeck = () => {
+        const { dispatch, navigation, route } = this.props
+        const { id } = route.params
+        removeDeck(id)
         dispatch(deleteDeck(id))
         navigation.goBack()
-        removeDeck(id)
-        alert('delete Worked!')
     }
 
     // shouldComponentUpdate(nextProps) {
@@ -26,6 +26,9 @@ class DeckDetails extends React.Component {
 
     render(props) {
         const { id } = this.props.route.params
+        if(this.props.state[id] === undefined) {
+            return <View><Text>Not Found!</Text></View>
+        }
         const { name, questions } = this.props.state[id]
         // console.log(this.props)
         return(
@@ -38,10 +41,13 @@ class DeckDetails extends React.Component {
                     <TouchableOpacity onPress={()=>this.props.navigation.push('New Quiz', {id: id})} style={[styles.createBtn, {backgroundColor: 'purple'}]}>
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Add Card</Text>
                     </TouchableOpacity>
+                    {
+                        questions.length !== 0 &&
                     <TouchableOpacity onPress={()=>this.props.navigation.push('Quiz', {id: id})} style={[styles.createBtn, {backgroundColor: 'green'}]}>
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Start Quiz</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>this.deleteDeck}>
+                    }
+                    <TouchableOpacity onPress={()=>this.deleteDeck(id)}>
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'red', margin: 10}}>Delete Deck</Text>
                     </TouchableOpacity>
                 </View>
