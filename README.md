@@ -5,6 +5,11 @@
 if you clone the repository please run:
 ### `expo install` or `npm i`
 
+after to start app:
+
+### `expo start` or `npm start`
+to run app either on an emulator or in a device!
+
 the app is built using ReactNative expo
 
 ## Features includes
