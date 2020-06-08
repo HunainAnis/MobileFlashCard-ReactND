@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 class DeckDetails extends React.Component {
     render() {
         const { id } = this.props.route.params
-        const { name, questions } = this.props.decks[id]
+        const { name, questions } = this.props.state[id]
         console.log(this.props)
         return(
             <View style={styles.container}>
@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
     }
   });
 
-function mapStateToProps({ decks }) {
+function mapStateToProps(state) {
     return {
-        decks
+        state
     }
 }
 

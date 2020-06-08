@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 export const DECK_STORAGE_KEY = 'Mobileflashcard:deck'
 
 const intialObject = {
-    decks:{
         deck1:{
             name:'Personal Deck',
             questions:[
@@ -39,7 +38,6 @@ const intialObject = {
             ]
         }
     }
-}
 export const fetchDecks = async () => {
     AsyncStorage.clear()
     try {
@@ -67,21 +65,11 @@ export function saveDeck(deckName) {
     )
 }
 
-export function addQuestion(question) {
+export function addQuestion(key,question) {
     return(
-        AsyncStorage.getItem(DECK_STORAGE_KEY)
-        .then(data=>{
-            let newData = data
-            for (var key in newData) {
-                if (newData[key].name === question.name) {
-                  delete newData.key;
-                }
-                return newData
-              }
-            newData[question.name] = question
-            
-            return AsyncStorage.mergeItem(DECK_STORAGE_KEY, newData)
-            .then(data=>console.log(data,'new Data'))
-        })
+        AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({[key]:question}))
+        .then( AsyncStorage.getItem(DECK_STORAGE_KEY)
+            .then(data=>console.log(data, 'aya'))
+        )
     )
 }

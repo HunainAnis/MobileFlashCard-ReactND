@@ -1,22 +1,25 @@
 import React from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { addQuestion } from '../utils/api'
+import { connect } from 'react-redux'
 
 class NewQuiz extends React.Component {
 
     state={
+        name:'',
         question: '',
         answer: ''
     }
 
-    handleSubmit() {
+    handleSubmit(e) {
         const { question, answer } = this.state
         let data = {question, answer}
-        addQuestion(data)
+        addQuestion(e,data)
         alert(this.state.answer)
     }
 
-    render() {
+    render(props) {
+        console.log(this.state, 'newQuizState')
         return(
             <View style={styles.container}>
                 <View style={{alignItems: 'stretch', justifyContent: 'flex-start', marginTop: 30}}>
@@ -38,7 +41,7 @@ class NewQuiz extends React.Component {
                 </View>
                 <View>
                     <Text></Text>
-                    <TouchableOpacity onPress={()=>this.handleSubmit()} style={styles.createBtn} >
+                    <TouchableOpacity onPress={()=>this.handleSubmit(this.props.route.params.id)} style={styles.createBtn} >
                         <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>Submit</Text>
                     </TouchableOpacity>
                 </View>
@@ -70,5 +73,30 @@ const styles = StyleSheet.create({
     }
   });
 
+function mapStateToProps(state) {
+    return {    
+        state
+    }
+}
 
-export default NewQuiz
+export default connect(mapStateToProps)(NewQuiz)
+
+// {"deck1":{
+//     "name":"Personal Deck",
+//     "questions":[
+//         {
+//             "question":"What is your name?",
+//             "answer":"Hunain"
+//         },
+//         {
+//             "question":"What is my name?"
+//             ,"answer":"Hunain"
+//         }
+//     ],"question":"Fhb",
+//     "answer":"Ggjj"
+// },
+// "deck2":{
+//     "name":"My Deck",
+//     "questions":[
+//         {
+//             "question":"What is your name?","answer":"Hunain"},{"question":"What is my name?","answer":"Hunain"},{"question":"What is your favorite fruit??","answer":"Cherry"},{"question":"What do you want to eat?","answer":"Anything"}]}}

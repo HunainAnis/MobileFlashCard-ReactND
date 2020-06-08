@@ -20,7 +20,7 @@ class Quiz extends React.Component {
     }
     render(props) {
         const { id } = this.props.route.params
-        const { questions } = this.props.decks[id]
+        const { questions } = this.props.state[id]
         console.log(this.props.route.params)
         return(
             <ScrollView>
@@ -89,9 +89,9 @@ const styles = StyleSheet.create({
   });
 
 
-function mapStateToProps({ decks }) {
+function mapStateToProps(state) {
     return {
-        decks
+        state
     }
 }
 
