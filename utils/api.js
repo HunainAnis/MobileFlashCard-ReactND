@@ -56,12 +56,9 @@ export const fetchDecks = async () => {
     )
   }
 
-export function saveDeck(deckName) {
+export function saveDeck(key, deckDetails) {
     return (
-        AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({[deckName]:[]}))
-        .then(
-            AsyncStorage.getItem(DECK_STORAGE_KEY)
-        )
+        AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({[key]:deckDetails}))
     )
 }
 

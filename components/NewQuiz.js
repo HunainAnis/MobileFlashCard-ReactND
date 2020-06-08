@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { addQuestion } from '../utils/api'
 import { connect } from 'react-redux'
+import { addNewQuestion } from '../actions/index'
 
 class NewQuiz extends React.Component {
 
@@ -13,12 +14,14 @@ class NewQuiz extends React.Component {
 
     handleSubmit(e) {
         const { question, answer } = this.state
-        const { deck } = this.props
+        const { deck, id } = this.props
+        const questionAnwer = { question, answer }
         let data = {
             ...deck,
             questions:deck.questions.concat({ question, answer })
         }
         addQuestion(e,data)
+        this.props.dispatch(addNewQuestion({ id, questionAnwer }))
         alert(this.state.answer)
     }
 
@@ -79,7 +82,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, { route }) {
     const { id } = route.params
-    return {    
+    return {  
+        id,  
         deck:state[id]
     }
 }

@@ -11,15 +11,10 @@ export function fetchAllDecks(decks) {
     }
 }
 
-export function addDeck(deckName) {
-    const data={}
-    data[deckName] = {
-        name:[deckName],
-        questions:[]
-    }
+export function addDeck(deck) {
     return {
         type: ADD_NEW_DECK,
-        data
+        deck
     }
 }
 
@@ -30,7 +25,7 @@ export function deleteDeck(id) {
     }
 }
 
-export function addQuestion(question) {
+export function addNewQuestion(question) {
     return {
         type: ADD_QUESTION,
         question

@@ -20,8 +20,9 @@ class CreateDeck extends React.Component {
         if(deckName !== '') {
             // saving data via async
             // added to redux store
-            this.props.dispatch(addDeck(deckName))
-            saveDeck(deckName)
+            const data = { name: deckName, questions:[] }
+            this.props.dispatch(addDeck({ deckName, data }))
+            saveDeck( deckName, data)
             this.setState({deckName:''})
             // navigate to home
         }

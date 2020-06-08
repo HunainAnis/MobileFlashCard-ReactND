@@ -1,4 +1,4 @@
-import { ADD_NEW_DECK, REMOVE_DECK, FETCH_ALL_DECKS } from "../actions";
+import { ADD_NEW_DECK, REMOVE_DECK, FETCH_ALL_DECKS, ADD_QUESTION } from "../actions";
 
 export default function decks ( state={}, action ) {
     switch(action.type) {
@@ -10,12 +10,19 @@ export default function decks ( state={}, action ) {
         case ADD_NEW_DECK:
             return {
                 ...state,
-                ...state.decks,
-                ...[action.data]
+                [action.deck.deckName]:action.deck.data
             }
         case REMOVE_DECK:
             return {
                 ...state
+            }
+        case ADD_QUESTION:
+            return {
+                ...state,
+                [action.question.id]:{
+                    ...state[action.question.id],
+                    questions:state[action.question.id].questions.concat(action.question.questionAnwer)
+                }
             }
         default:
             return state
