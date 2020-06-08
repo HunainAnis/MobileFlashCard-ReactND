@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import { fetchDecks } from '../utils/api'
 import { fetchAllDecks } from '../actions'
 import { connect } from 'react-redux'
@@ -17,7 +17,7 @@ class AllDecks extends React.Component {
         const { state } = this.props
         console.log(state, 'all decks')
         return(
-            <View>
+            <ScrollView>
             {state && Object.keys(state).map(deck=>{
                 return (
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('Detail', {id:deck})} key={state[deck].name}>
@@ -27,7 +27,7 @@ class AllDecks extends React.Component {
                         </View>
                     </TouchableOpacity>
             )})}
-            </View>
+            </ScrollView>
         )
     }
 }

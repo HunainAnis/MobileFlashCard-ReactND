@@ -39,7 +39,7 @@ const intialObject = {
         }
     }
 export const fetchDecks = async () => {
-    AsyncStorage.clear()
+    // AsyncStorage.clear()
     try {
       const jsonValue = JSON.stringify(intialObject)
       await AsyncStorage.setItem(DECK_STORAGE_KEY, jsonValue)
