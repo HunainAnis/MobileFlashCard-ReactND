@@ -13,6 +13,9 @@ import DeckDetails from './components/deckDetails';
 import Quiz from './components/Quiz';
 import NewQuiz from './components/NewQuiz';
 import Score from './components/Score';
+import { setLocalNotification, quizAttemptChecker } from './utils/api';
+import * as Permissions from 'expo-permissions';
+// import { Permissions } from 'react-native-unimodules';
 
 const Stack = createStackNavigator();
 
@@ -37,7 +40,12 @@ function MyStack() {
       </Tab.Navigator>
     )
   }
-export default function App() {
+export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification()
+    quizAttemptChecker()
+  }
+  render() {
   return (
     <Provider store={createStore(reducer)}>
       <UdaciStatusBar backgroundColor='purple' barStyle='light-content'  />
@@ -47,6 +55,7 @@ export default function App() {
     </Provider>
 
   );
+}
 }
 
 function UdaciStatusBar ({ backgroundColor, ...props }) {

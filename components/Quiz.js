@@ -3,8 +3,9 @@ import { View, ScrollView, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Score from './Score'
-import { storeQuiz, fetchQuizDetails, removeQuiz } from '../utils/api'
+import { storeQuiz, fetchQuizDetails, removeQuiz, QUIZ_STORAGE_KEY } from '../utils/api'
 import { createPortal } from 'react-dom'
+import AsyncStorage from '@react-native-community/async-storage'
 
 class Quiz extends React.Component {
 
@@ -43,7 +44,8 @@ class Quiz extends React.Component {
             revealed: [],
             right: [],
             wrong: [],
-            answered: []
+            answered: [],
+        
         })
     }
 
@@ -51,7 +53,7 @@ class Quiz extends React.Component {
         const { state } = this
         const key=new Date().toDateString()
         const quiz = {...state, id:key}
-        storeQuiz(key, quiz )
+        AsyncStorage.getItem(QUIZ_STORAGE_KEY).then(data=>JSON.parse(data) !== key && storeQuiz(key))
     }
 
     checker(question) {
@@ -59,7 +61,7 @@ class Quiz extends React.Component {
     }
 
     render(props) {
-        console.log(this.props, 'quiz')
+        // console.log(this.props, 'quiz')
         const { id } = this.props.route.params
         const { questions } = this.props.state[id]
         // console.log(this.props.route.params)

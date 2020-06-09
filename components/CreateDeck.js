@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Keyboard } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { saveDeck } from '../utils/api'
 import { addDeck } from '../actions'
@@ -26,6 +26,7 @@ class CreateDeck extends React.Component {
             saveDeck( deckName, data)
             this.setState({deckName:''})
             // navigate to home
+            Keyboard.dismiss()
             navigation.goBack()
         }
         else {

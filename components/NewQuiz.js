@@ -16,17 +16,28 @@ class NewQuiz extends React.Component {
         const { question, answer } = this.state
         const { deck, id, navigation } = this.props
         const questionAnwer = { question, answer }
-        let data = {
-            ...deck,
-            questions:deck.questions.concat({ question, answer })
+        if(question==='') {
+            alert('Please add proper question')
         }
-        addQuestion(e,data)
-        this.props.dispatch(addNewQuestion({ id, questionAnwer }))
-        navigation.goBack()
+        else if(answer==='') {
+            alert('Please add proper answer')
+        } else {
+            let data = {
+                ...deck,
+                questions:deck.questions.concat({ question, answer })
+            }
+            addQuestion(e,data)
+            this.props.dispatch(addNewQuestion({ id, questionAnwer }))
+            navigation.goBack()
+        }
+    }
+    checker() {
+        return this.state.name !== '' && this.state.question !== ''
     }
 
     render(props) {
         // console.log(this.props.deck, 'newQuizState')
+        const { question, answer } = this.state
         return(
             <View style={styles.container}>
                 <View style={{alignItems: 'stretch', justifyContent: 'flex-start', marginTop: 30}}>
