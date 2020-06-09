@@ -13,7 +13,8 @@ class Quiz extends React.Component {
         revealed:[],
         right:[],
         wrong: [],
-        answered:[]
+        answered:[],
+        questionNo: 0
     }
 
     revealAnswer = (e) => {
@@ -34,17 +35,19 @@ class Quiz extends React.Component {
         : (this.setState((state) => ({right:state[type].concat(id)}))))
 
         this.state.answered.includes(id) === false && this.setState((state) => ({answered:state.answered.concat(id)}))
+        this.setState(state=>({questionNo:state.questionNo + 1}))
         // console.log(this.state)
     }
 
     startOver() {
     const key=new Date().toDateString()   
-        removeQuiz(key)
+
         this.setState({
             revealed: [],
             right: [],
             wrong: [],
             answered: [],
+            questionNo:0
         
         })
     }
@@ -84,11 +87,9 @@ class Quiz extends React.Component {
                             fontSize: 30, 
                             textAlign: 'center', 
                             color: 'purple', 
-                            margin: 10}} >Remaining questions to answer:  { questions.length-this.state.right.length}</Text>
+                            margin: 10}} >Remaining questions to answer:  { questions.length-this.state.right.length }</Text>
                     </View>
-                {questions.map(q => (
                     <View 
-                    key={q.question} 
                     style={{margin:20, padding: 10, borderRadius: 10, borderColor: 'black', borderWidth: 2}}
                     >
                         <Text 
@@ -96,25 +97,24 @@ class Quiz extends React.Component {
                             textAlign: 'center', 
                             color: 'purple', 
                             margin: 10}} 
-                            key={q.question}
                         >
-                            {this.state.revealed.includes(q) ? q.answer : q.question}
+                            {this.state.revealed.includes(questions[this.state.questionNo]) ? questions[this.state.questionNo].answer : questions[this.state.questionNo].question}
                         </Text>
                             {/* {this.state.revealed.includes(q) && (this.state.right.includes(q) || this.state.wrong.includes(q))? */}
-                            {this.state.revealed.includes(q) && this.checker(q) !== true ?
+                            {this.state.revealed.includes(questions[this.state.questionNo]) && this.checker(questions[this.state.questionNo]) !== true ?
                             (
                             <View>
                                 <Text>Was you guess: </Text>
                                 <TouchableOpacity
                                     style={[styles.createBtn, {backgroundColor: 'green'}]}
-                                    onPress={()=>this.updateAnswer('right', q)}
+                                    onPress={()=>this.updateAnswer('right', questions[this.state.questionNo])}
                                 >
                                     <Text style={{ fontSize: 10, textAlign: 'center', color: 'white', margin: 10}}>Right</Text>
                                 </TouchableOpacity>
                                 <Text style={{textAlign: 'center'}}>or</Text>
                                 <TouchableOpacity 
                                     style={[styles.createBtn, {backgroundColor: 'red'}]}
-                                    onPress={()=>this.updateAnswer('wrong', q)}
+                                    onPress={()=>this.updateAnswer('wrong', questions[this.state.questionNo])}
                                 >
                                     <Text style={{ fontSize: 10, textAlign: 'center', color: 'white', margin: 10}}>Wrong</Text>
                                 </TouchableOpacity>
@@ -122,19 +122,18 @@ class Quiz extends React.Component {
                             )
                             :(
                             <TouchableOpacity 
-                                onPress={()=>this.revealAnswer(q)} 
-                                style={[styles.createBtn, {backgroundColor: this.checker(q) ? 'gray' : 'green'}]}
-                                disabled={this.checker(q)}
+                                onPress={()=>this.revealAnswer(questions[this.state.questionNo])} 
+                                style={[styles.createBtn, {backgroundColor: this.checker(questions[this.state.questionNo]) ? 'gray' : 'green'}]}
+                                disabled={this.checker(questions[this.state.questionNo])}
                             >
                                 <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', margin: 10}}>
-                                    {this.checker(q) ? 'Your Answer is saved' : 'Reveal Answer'}      
+                                    {this.checker(questions[this.state.questionNo]) ? 'Your Answer is saved' : 'Reveal Answer'}      
                                 </Text>
                             </TouchableOpacity>
                             )
                         }
                     </View>
-                ))
-                }
+
                 { questions.length === this.state.answered.length &&
                     <TouchableOpacity>
                     <Text>Quiz Complete</Text>
