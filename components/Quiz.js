@@ -26,21 +26,22 @@ class Quiz extends React.Component {
     }
 
     updateAnswer(type, id) {
-        (type==='wrong'
-        ? (this.setState((state) => ({
-            wrong:state[type].concat(id)
-            }
-        )))   
-
-        : (this.setState((state) => ({right:state[type].concat(id)}))))
-
-        this.state.answered.includes(id) === false && this.setState((state) => ({answered:state.answered.concat(id)}))
-        this.setState(state=>({questionNo:state.questionNo + 1}))
-        // console.log(this.state)
+        if(type === 'right') {
+            this.setState((state) => ({right:state[type].concat(id)}))
+            this.state.answered.includes(id) === false && this.setState((state) => ({answered:state.answered.concat(id)}))
+            this.setState(state=>({questionNo:state.questionNo + 1}))
+            console.log('right selected')
+        }
+        if(type === 'wrong') {
+            this.setState((state) => ({wrong:state[type].concat(id)}))
+            this.state.answered.includes(id) === false && this.setState((state) => ({answered:state.answered.concat(id)}))
+            this.setState(state=>({questionNo:state.questionNo + 1}))
+            console.log('wrong selected')
+        }
     }
 
     startOver() {
-    const key=new Date().toDateString()   
+    const key=new Date().toDateString()
 
         this.setState({
             revealed: [],
@@ -53,14 +54,25 @@ class Quiz extends React.Component {
     }
 
     storeQuizToAsync() {
-        const { state } = this
         const key=new Date().toDateString()
-        const quiz = {...state, id:key}
-        AsyncStorage.getItem(QUIZ_STORAGE_KEY).then(data=>JSON.parse(data) !== key && storeQuiz(key))
+        storeQuiz(key)
     }
-
+ // checker: if question is answered?
     checker(question) {
         return this.state.answered.includes(question)
+    }
+    
+    goBack() {
+        this.setState({
+            revealed: [],
+            right: [],
+            wrong: [],
+            answered: [],
+            questionNo:0
+        
+        })
+        this.props.navigation.goBack()
+
     }
 
     render(props) {
@@ -74,7 +86,7 @@ class Quiz extends React.Component {
                     <Score 
                         startOver={()=>this.startOver() }
                         state={this.state}
-                        navi={this.props.navigation.goBack}
+                        navi={()=>this.goBack()}
                     />
                     {this.storeQuizToAsync()}
                 </>
@@ -87,7 +99,7 @@ class Quiz extends React.Component {
                             fontSize: 30, 
                             textAlign: 'center', 
                             color: 'purple', 
-                            margin: 10}} >Remaining questions to answer:  { questions.length-this.state.right.length }</Text>
+                            margin: 10}} >Remaining questions to answer:  { questions.length-this.state.answered.length }</Text>
                     </View>
                     <View 
                     style={{margin:20, padding: 10, borderRadius: 10, borderColor: 'black', borderWidth: 2}}
@@ -133,12 +145,6 @@ class Quiz extends React.Component {
                             )
                         }
                     </View>
-
-                { questions.length === this.state.answered.length &&
-                    <TouchableOpacity>
-                    <Text>Quiz Complete</Text>
-                </TouchableOpacity>
-                }
             </ScrollView>
         )
     }

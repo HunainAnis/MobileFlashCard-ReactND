@@ -60,10 +60,7 @@ export function fetchQuizDetails() {
 
 export function storeQuiz(key) {
     return AsyncStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(key))
-    .then(()=>(
-        AsyncStorage.getItem(QUIZ_STORAGE_KEY)
-        .then(data=>console.log(data, 'storeQuiz key'))
-    ))
+    .then(clearLocalNotification())
 }
 
 export function saveDeck(key, deckDetails) {
@@ -76,13 +73,7 @@ export function addQuestion(key,question) {
         AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({[key]:question}))
     )
 }
-export function quizAttemptChecker() {
-    const date = new Date().toDateString()
-    return AsyncStorage.getItem(QUIZ_STORAGE_KEY)
-        .then(result=>{
-            return (JSON.parse(result) === date) ? true : false
-        })
-}
+
 export function removeQuiz (key) {
     return AsyncStorage.getItem(QUIZ_STORAGE_KEY)
       .then((results) => {
@@ -109,6 +100,7 @@ export function removeDeck (key) {
 export function clearLocalNotification() {
     return AsyncStorage.removeItem(NOTIFICATION_KEY)
       .then(Notifications.cancelAllScheduledNotificationsAsync())
+      .then(console.log('Notifications cleared'))
   }
   
   function createNotification() {
@@ -119,7 +111,11 @@ export function clearLocalNotification() {
         sound: true
       },
       android: {
-        channelId: 'LocalNotification'
+        channelId: 'LocalNotification',
+        sound: true,
+        priority: 'high',
+        sticky: false,
+        vibrate: true
       }
     }
   }
@@ -128,18 +124,11 @@ export function clearLocalNotification() {
     AsyncStorage.getItem(NOTIFICATION_KEY)
       .then(JSON.parse)
       .then((data)=> {
-        if(data!== null) {
+        if(data === null) {
           Permissions.askAsync(Permissions.NOTIFICATIONS)
             .then(({ status })=> {
               if(Constants.isDevice && status === 'granted') {
                 Notifications.cancelAllScheduledNotificationsAsync()
-
-                const handleNotification = ({ notificationId }) => {
-                        quizAttemptChecker()
-                        .then((result) => {
-                            (result) && Notifications.dismissNotificationAsync(notificationId)
-                        })
-                }
 
                 if(Platform.OS === 'android') {
                     Notifications.createChannelAndroidAsync(
@@ -154,10 +143,11 @@ export function clearLocalNotification() {
                         )
                     }
                     let tomorrow = new Date()
-                    tomorrow.setDate(tomorrow.getDate())
-                    tomorrow.setHours(2)
-                    tomorrow.setMinutes(30)
-                if(quizAttemptChecker()) {
+                    tomorrow.setDate(tomorrow.getDate() + 1)
+                    tomorrow.setHours(19)
+                    tomorrow.setMinutes(0)
+
+                // if user don't take a single quiz, will be notified at 7 PM
                     Notifications.scheduleLocalNotificationAsync(
                       createNotification(),
                       {
@@ -165,9 +155,8 @@ export function clearLocalNotification() {
                         repeat: 'day'
                       }
                     )
-                }
   
-                AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+                // AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
               }
             })
         }

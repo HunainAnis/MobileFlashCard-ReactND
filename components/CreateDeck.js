@@ -27,7 +27,7 @@ class CreateDeck extends React.Component {
             this.setState({deckName:''})
             // navigate to home
             Keyboard.dismiss()
-            navigation.goBack()
+            navigation.navigate('Detail', {id:deckName})
         }
         else {
             alert('Provide a valid Deck name!')

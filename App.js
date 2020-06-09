@@ -43,7 +43,6 @@ function MyStack() {
 export default class App extends React.Component {
   componentDidMount() {
     setLocalNotification()
-    quizAttemptChecker()
   }
   render() {
   return (
